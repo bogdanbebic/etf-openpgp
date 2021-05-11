@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="etf-openpgp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/etf_openpgp_jar</output-path>
+    <root id="archive" name="etf-openpgp.jar">
+      <element id="module-output" name="etf-openpgp" />
+      <element id="extracted-dir" path="$IDEA_HOME$/redist/forms_rt.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
