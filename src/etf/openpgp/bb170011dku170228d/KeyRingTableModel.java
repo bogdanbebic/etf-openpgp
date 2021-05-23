@@ -3,6 +3,7 @@ package etf.openpgp.bb170011dku170228d;
 import javax.swing.table.DefaultTableModel;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class KeyRingTableModel extends DefaultTableModel {
     private static final String [] columnNames = {
@@ -40,6 +41,24 @@ public class KeyRingTableModel extends DefaultTableModel {
 
     @Override
     public void removeRow(int row) {
+        // delete key
+        Object keyRing = super.getDataVector().get(row);
+        if (keyRing instanceof Vector) {
+            Vector key = (Vector) keyRing;
+            keyRings.removeIf(element -> element.getValue(0).equals(key.get(0)) &&
+                    element.getValue(1).equals(key.get(1)) &&
+                    element.getValue(2).equals(key.get(2)) &&
+                    element.getValue(3).equals(key.get(3)) &&
+                    element.getValue(4).equals(key.get(4)));
+        }
+        // remove key from UI
         super.removeRow(row);
+    }
+
+    public void add(KeyRingBean key) {
+        // add key
+        keyRings.add(key);
+        // add key to UI
+        super.addRow(key.toArray());
     }
 }
