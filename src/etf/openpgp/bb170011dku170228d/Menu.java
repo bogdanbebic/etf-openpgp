@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class Menu {
@@ -17,6 +18,7 @@ public class Menu {
     private JPanel mainMenu;
     private JPanel privateKeyRingPanel;
     private JPanel publicKeyRingPanel;
+    private JTable privateKeysTable;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Menu");
@@ -105,8 +107,16 @@ public class Menu {
             dialog.pack();
             dialog.setVisible(true);
         }));
+        deleteButton.setEnabled(true); // TODO: maybe delete later
         deleteButton.addActionListener((e -> {
-            // TODO: implement
+            JTable selectedTable = privateKeysTable;
+            int rowToRemove = selectedTable.getSelectedRow();
+            ((DefaultTableModel)selectedTable.getModel()).removeRow(rowToRemove);
+            // deleteButton.setEnabled(false);
         }));
+    }
+
+    private void createUIComponents() {
+        privateKeysTable = new JTable(new KeyRingTableModel());
     }
 }
