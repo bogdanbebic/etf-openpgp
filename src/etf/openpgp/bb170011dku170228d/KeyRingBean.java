@@ -1,13 +1,16 @@
 package etf.openpgp.bb170011dku170228d;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public class KeyRingBean {
+public class KeyRingBean implements Serializable {
     private String name;
     private String email;
     private Instant validFrom;
     private Instant validTo;
     private char [] keyId;
+
+    public KeyRingBean() {}
 
     public KeyRingBean(String name, String email, Instant validFrom, Instant validTo, char[] keyId) {
         this.name = name;
