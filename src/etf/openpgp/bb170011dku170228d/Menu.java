@@ -15,6 +15,8 @@ public class Menu {
     private JButton deleteButton;
     private JTabbedPane tabbedPane1;
     private JPanel mainMenu;
+    private JPanel privateKeyRingPanel;
+    private JPanel publicKeyRingPanel;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Menu");
@@ -84,4 +86,27 @@ public class Menu {
         return mainMenu;
     }
 
+    {
+        // action listeners
+        signEncryptButton.addActionListener((e -> {
+            // TODO: implement
+        }));
+        decryptVerifyButton.addActionListener((e -> {
+            // TODO: implement
+        }));
+        importButton.addActionListener((e -> {
+            // TODO: implement
+        }));
+        exportButton.addActionListener((e -> {
+            // TODO: implement
+        }));
+        newKeyPairButton.addActionListener((e -> {
+            KeyCreationDialog dialog = new KeyCreationDialog();
+            dialog.pack();
+            dialog.setVisible(true);
+        }));
+        deleteButton.addActionListener((e -> {
+            // TODO: implement
+        }));
+    }
 }
