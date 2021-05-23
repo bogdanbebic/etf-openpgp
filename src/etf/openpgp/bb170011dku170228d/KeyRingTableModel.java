@@ -9,6 +9,8 @@ public class KeyRingTableModel extends DefaultTableModel {
             "Name", "Email", "Valid From", "Valid To", "Key ID"
     };
 
+    private static final KeyRingBean dummyKeyRingBean = new KeyRingBean();
+
     private ArrayList<KeyRingBean> keyRings = new ArrayList<>();
     {
         KeyRingBean krb = new KeyRingBean("", "", Instant.now(), Instant.now(), new char[]{'a', 'b', 'c', 'd', 'e'});
@@ -28,7 +30,7 @@ public class KeyRingTableModel extends DefaultTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return keyRings.get(0).getValue(columnIndex).getClass();
+        return dummyKeyRingBean.getValue(columnIndex).getClass();
     }
 
     @Override
