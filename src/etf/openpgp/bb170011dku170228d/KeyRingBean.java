@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.time.Instant;
 
 public class KeyRingBean implements Serializable {
-    private String name;
-    private String email;
-    private Instant validFrom;
-    private Instant validTo;
-    private char [] keyId;
+    private String name = "";
+    private String email = "";
+    private Instant validFrom = Instant.now();
+    private Instant validTo = Instant.now();
+    private char [] keyId = new char[0];
 
     public KeyRingBean() {}
 
