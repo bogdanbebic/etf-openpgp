@@ -147,10 +147,27 @@ public class Menu {
             // TODO: implement
         }));
         importButton.addActionListener((e -> {
-            // TODO: implement
+            try {
+                JFileChooser fc = new JFileChooser();
+                if (fc.showOpenDialog(mainMenu) == JFileChooser.APPROVE_OPTION) {
+                    PGPPublicKeyRing pkr = new PGPPublicKeyRing(
+                            PGPUtil.getDecoderStream(new FileInputStream(fc.getSelectedFile().getName())),
+                            new BcKeyFingerprintCalculator());
+                    publicKeyRingTableModel.add(new PublicKeyRingBean(pkr));
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }));
+        exportButton.setEnabled(true); // TODO: maybe delete later
         exportButton.addActionListener((e -> {
-            // TODO: implement
+            JTable selectedTable = privateKeysTable;
+            if (tabbedPane1.getSelectedIndex() == 1)
+                selectedTable = publicKeysTable;
+            int rowToExport = selectedTable.getSelectedRow();
+            if (rowToExport != -1)
+                ((KeyRingTableModel)selectedTable.getModel()).exportRow(rowToExport);
+            // exportButton.setEnabled(false);
         }));
         newKeyPairButton.addActionListener((e -> {
             KeyCreationDialog dialog = new KeyCreationDialog();

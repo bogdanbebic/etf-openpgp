@@ -1,18 +1,31 @@
 package etf.openpgp.bb170011dku170228d;
 
+import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 public class PublicKeyRingBean {
-    private String userId = "";
+    protected String userId = "";
     private Date validFrom = new Date();
-    private String keyId = "";
+    protected String keyId = "";
 
     private PGPPublicKeyRing pkr;
 
     public PGPPublicKeyRing getPkr() {
         return pkr;
+    }
+
+    public void export() {
+        try (ArmoredOutputStream out = new ArmoredOutputStream(
+                new FileOutputStream(userId + keyId + "-public.asc"))) {
+            pkr.encode(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public PublicKeyRingBean() {}

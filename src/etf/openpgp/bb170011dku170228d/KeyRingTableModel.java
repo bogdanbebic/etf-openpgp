@@ -26,6 +26,18 @@ public class KeyRingTableModel extends DefaultTableModel {
         return this.keyRings.stream().map(e -> ((PrivateKeyRingBean)e).getSkr()).collect(Collectors.toList());
     }
 
+    public void exportRow(int row) {
+        Object keyRing = super.getDataVector().get(row);
+        if (keyRing instanceof Vector) {
+            Vector key = (Vector) keyRing;
+            keyRings.stream().filter(element ->
+                    element.getValue(0).equals(key.get(0)) &&
+                    element.getValue(1).equals(key.get(1)) &&
+                    element.getValue(2).equals(key.get(2))
+            ).findFirst().ifPresent(PublicKeyRingBean::export);
+        }
+    }
+
     @Override
     public int getColumnCount() {
         return columnNames.length;
