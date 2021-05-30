@@ -6,6 +6,7 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -150,6 +151,7 @@ public class Menu {
         importButton.addActionListener((e -> {
             try {
                 JFileChooser fc = new JFileChooser();
+                fc.setFileFilter(new FileNameExtensionFilter("ASC files", "asc"));
                 if (fc.showOpenDialog(mainMenu) == JFileChooser.APPROVE_OPTION) {
                     PGPPublicKeyRing pkr = new PGPPublicKeyRing(
                             PGPUtil.getDecoderStream(new FileInputStream(fc.getSelectedFile().getAbsolutePath())),
