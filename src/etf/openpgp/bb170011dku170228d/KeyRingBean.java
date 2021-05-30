@@ -2,39 +2,14 @@ package etf.openpgp.bb170011dku170228d;
 
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class KeyRingBean implements Serializable {
+public class KeyRingBean {
     private String userId = "";
     private Date validFrom = new Date();
     private String keyId = "";
 
     private PGPPublicKeyRing pkr;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Date getValidFrom() {
-        return validFrom;
-    }
-
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
-
-    public String getKeyId() {
-        return keyId;
-    }
-
-    public void setKeyId(String keyId) {
-        this.keyId = keyId;
-    }
 
     public KeyRingBean() {}
 
