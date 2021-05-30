@@ -35,7 +35,7 @@ public class RsaGeneration {
             skr.encode(secout);
             secout.close();
 
-            Menu.keyRingTableModel.add(new KeyRingBean(pkr, skr));
+            Menu.keyRingTableModel.add(new KeyRingBean(pkr));
         } catch (Exception e) {
             e.printStackTrace();
         }

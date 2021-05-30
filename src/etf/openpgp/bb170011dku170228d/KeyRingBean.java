@@ -1,7 +1,6 @@
 package etf.openpgp.bb170011dku170228d;
 
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
-import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +11,6 @@ public class KeyRingBean implements Serializable {
     private String keyId = "";
 
     private PGPPublicKeyRing pkr;
-    private PGPSecretKeyRing skr;
 
     public String getUserId() {
         return userId;
@@ -40,9 +38,8 @@ public class KeyRingBean implements Serializable {
 
     public KeyRingBean() {}
 
-    public KeyRingBean(PGPPublicKeyRing pkr, PGPSecretKeyRing skr) {
+    public KeyRingBean(PGPPublicKeyRing pkr) {
         this.pkr = pkr;
-        this.skr = skr;
 
         this.userId = pkr.getPublicKey().getUserIDs().next();
         this.validFrom = pkr.getPublicKey().getCreationTime();
