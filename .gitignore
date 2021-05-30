@@ -75,3 +75,11 @@ fabric.properties
 
 # lib folder
 lib/
+
+*.asc
+
+keys.pkr
+
+keys.skr
+
+unpaired.pkr
