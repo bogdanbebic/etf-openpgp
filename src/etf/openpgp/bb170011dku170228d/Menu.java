@@ -6,6 +6,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.File;
 
 public class Menu {
     private JButton signEncryptButton;
@@ -19,6 +20,8 @@ public class Menu {
     private JPanel privateKeyRingPanel;
     private JPanel publicKeyRingPanel;
     private JTable privateKeysTable;
+
+    static KeyRingTableModel keyRingTableModel = new KeyRingTableModel();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Menu");
@@ -111,12 +114,20 @@ public class Menu {
         deleteButton.addActionListener((e -> {
             JTable selectedTable = privateKeysTable;
             int rowToRemove = selectedTable.getSelectedRow();
-            ((DefaultTableModel)selectedTable.getModel()).removeRow(rowToRemove);
+            if (rowToRemove != -1)
+                ((DefaultTableModel)selectedTable.getModel()).removeRow(rowToRemove);
             // deleteButton.setEnabled(false);
         }));
     }
 
+    {
+        // load public and private key rings
+        File publicRingFile = new File("dummy.pkr");
+        File privateRingFile = new File("dummy.skr");
+        // TODO: implement
+    }
+
     private void createUIComponents() {
-        privateKeysTable = new JTable(new KeyRingTableModel());
+        privateKeysTable = new JTable(keyRingTableModel);
     }
 }

@@ -7,17 +7,12 @@ import java.util.Vector;
 
 public class KeyRingTableModel extends DefaultTableModel {
     private static final String [] columnNames = {
-            "Name", "Email", "Valid From", "Valid To", "Key ID"
+            "User ID", "Valid From", "Key ID"
     };
 
     private static final KeyRingBean dummyKeyRingBean = new KeyRingBean();
 
     private ArrayList<KeyRingBean> keyRings = new ArrayList<>();
-    {
-        KeyRingBean krb = new KeyRingBean("", "", Instant.now(), Instant.now(), new char[]{'a', 'b', 'c', 'd', 'e'});
-        super.addRow(krb.toArray());
-        keyRings.add(krb);
-    }
 
     @Override
     public int getColumnCount() {
@@ -47,9 +42,7 @@ public class KeyRingTableModel extends DefaultTableModel {
             Vector key = (Vector) keyRing;
             keyRings.removeIf(element -> element.getValue(0).equals(key.get(0)) &&
                     element.getValue(1).equals(key.get(1)) &&
-                    element.getValue(2).equals(key.get(2)) &&
-                    element.getValue(3).equals(key.get(3)) &&
-                    element.getValue(4).equals(key.get(4)));
+                    element.getValue(2).equals(key.get(2)));
         }
         // remove key from UI
         super.removeRow(row);
