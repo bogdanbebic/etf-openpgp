@@ -4,16 +4,20 @@ import org.bouncycastle.openpgp.PGPPublicKeyRing;
 
 import java.util.Date;
 
-public class KeyRingBean {
+public class PublicKeyRingBean {
     private String userId = "";
     private Date validFrom = new Date();
     private String keyId = "";
 
     private PGPPublicKeyRing pkr;
 
-    public KeyRingBean() {}
+    public PGPPublicKeyRing getPkr() {
+        return pkr;
+    }
 
-    public KeyRingBean(PGPPublicKeyRing pkr) {
+    public PublicKeyRingBean() {}
+
+    public PublicKeyRingBean(PGPPublicKeyRing pkr) {
         this.pkr = pkr;
 
         this.userId = pkr.getPublicKey().getUserIDs().next();

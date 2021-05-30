@@ -2,11 +2,18 @@ package etf.openpgp.bb170011dku170228d;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import org.bouncycastle.openpgp.*;
+import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.File;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Iterator;
 
 public class Menu {
     private JButton signEncryptButton;
@@ -20,8 +27,10 @@ public class Menu {
     private JPanel privateKeyRingPanel;
     private JPanel publicKeyRingPanel;
     private JTable privateKeysTable;
+    private JTable publicKeysTable;
 
-    static KeyRingTableModel keyRingTableModel = new KeyRingTableModel();
+    static KeyRingTableModel privateKeyRingTableModel = new KeyRingTableModel();
+    static KeyRingTableModel publicKeyRingTableModel = new KeyRingTableModel();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Menu");
@@ -29,6 +38,44 @@ public class Menu {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+
+                try {
+                    // private keys
+                    PGPPublicKeyRingCollection keyRingCollectionPublic =
+                            new PGPPublicKeyRingCollection(privateKeyRingTableModel.getPublicKeys());
+                    PGPSecretKeyRingCollection keyRingCollectionPrivate =
+                            new PGPSecretKeyRingCollection(privateKeyRingTableModel.getPrivateKeys());
+
+                    BufferedOutputStream publicKeysOut =
+                            new BufferedOutputStream(new FileOutputStream("keys.pkr"));
+                    keyRingCollectionPublic.encode(publicKeysOut);
+                    publicKeysOut.close();
+
+                    BufferedOutputStream privateKeysOut =
+                            new BufferedOutputStream(new FileOutputStream("keys.skr"));
+                    keyRingCollectionPrivate.encode(privateKeysOut);
+                    privateKeysOut.close();
+
+                    // unpaired public keys
+                    PGPPublicKeyRingCollection keyRingCollectionUnpaired =
+                            new PGPPublicKeyRingCollection(publicKeyRingTableModel.getPublicKeys());
+
+                    BufferedOutputStream unpairedKeysOut =
+                            new BufferedOutputStream(new FileOutputStream("unpaired.pkr"));
+                    keyRingCollectionUnpaired.encode(unpairedKeysOut);
+                    unpairedKeysOut.close();
+
+                } catch (IOException | PGPException ioException) {
+                    ioException.printStackTrace();
+                }
+
+                frame.dispose();
+            }
+        });
     }
 
     {
@@ -113,6 +160,8 @@ public class Menu {
         deleteButton.setEnabled(true); // TODO: maybe delete later
         deleteButton.addActionListener((e -> {
             JTable selectedTable = privateKeysTable;
+            if (tabbedPane1.getSelectedIndex() == 1)
+                selectedTable = publicKeysTable;
             int rowToRemove = selectedTable.getSelectedRow();
             if (rowToRemove != -1)
                 ((DefaultTableModel)selectedTable.getModel()).removeRow(rowToRemove);
@@ -120,14 +169,37 @@ public class Menu {
         }));
     }
 
-    {
-        // load public and private key rings
-        File publicRingFile = new File("dummy.pkr");
-        File privateRingFile = new File("dummy.skr");
-        // TODO: implement
+    static {
+        try {
+            PGPSecretKeyRingCollection skrCollection = new PGPSecretKeyRingCollection(
+                    PGPUtil.getDecoderStream(new FileInputStream("keys.skr")),
+                    new BcKeyFingerprintCalculator()
+            );
+            PGPPublicKeyRingCollection pkrCollection = new PGPPublicKeyRingCollection(
+                    PGPUtil.getDecoderStream(new FileInputStream("keys.pkr")),
+                    new BcKeyFingerprintCalculator()
+            );
+            Iterator<PGPPublicKeyRing> itPkr = pkrCollection.getKeyRings();
+            Iterator<PGPSecretKeyRing> itSkr = skrCollection.getKeyRings();
+            while (itPkr.hasNext() && itSkr.hasNext()) {
+                PGPPublicKeyRing nextPkr = itPkr.next();
+                PGPSecretKeyRing nextSkr = itSkr.next();
+                privateKeyRingTableModel.add(new PrivateKeyRingBean(nextPkr, nextSkr));
+            }
+
+            PGPPublicKeyRingCollection unpairedCollection = new PGPPublicKeyRingCollection(
+                    PGPUtil.getDecoderStream(new FileInputStream("unpaired.pkr")),
+                    new BcKeyFingerprintCalculator()
+            );
+            unpairedCollection.forEach(unpairedKey -> publicKeyRingTableModel.add(new PublicKeyRingBean(unpairedKey)));
+
+        } catch (IOException | PGPException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createUIComponents() {
-        privateKeysTable = new JTable(keyRingTableModel);
+        privateKeysTable = new JTable(privateKeyRingTableModel);
+        publicKeysTable = new JTable(publicKeyRingTableModel);
     }
 }

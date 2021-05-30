@@ -1,18 +1,30 @@
 package etf.openpgp.bb170011dku170228d;
 
+import org.bouncycastle.openpgp.PGPPublicKeyRing;
+import org.bouncycastle.openpgp.PGPSecretKeyRing;
+
 import javax.swing.table.DefaultTableModel;
-import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class KeyRingTableModel extends DefaultTableModel {
     private static final String [] columnNames = {
             "User ID", "Valid From", "Key ID"
     };
 
-    private static final KeyRingBean dummyKeyRingBean = new KeyRingBean();
+    private static final PublicKeyRingBean dummyKeyRingBean = new PublicKeyRingBean();
 
-    private ArrayList<KeyRingBean> keyRings = new ArrayList<>();
+    private ArrayList<PublicKeyRingBean> keyRings = new ArrayList<>();
+
+    public Collection<PGPPublicKeyRing> getPublicKeys() {
+        return this.keyRings.stream().map(PublicKeyRingBean::getPkr).collect(Collectors.toList());
+    }
+
+    public Collection<PGPSecretKeyRing> getPrivateKeys() {
+        return this.keyRings.stream().map(e -> ((PrivateKeyRingBean)e).getSkr()).collect(Collectors.toList());
+    }
 
     @Override
     public int getColumnCount() {
@@ -48,7 +60,7 @@ public class KeyRingTableModel extends DefaultTableModel {
         super.removeRow(row);
     }
 
-    public void add(KeyRingBean key) {
+    public void add(PublicKeyRingBean key) {
         // add key
         keyRings.add(key);
         // add key to UI

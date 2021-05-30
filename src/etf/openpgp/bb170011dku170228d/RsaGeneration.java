@@ -15,7 +15,6 @@ import org.bouncycastle.openpgp.operator.bc.BcPGPContentSignerBuilder;
 import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 import org.bouncycastle.openpgp.operator.bc.BcPGPKeyPair;
 
-import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -35,7 +34,7 @@ public class RsaGeneration {
             skr.encode(secout);
             secout.close();
 
-            Menu.keyRingTableModel.add(new KeyRingBean(pkr));
+            Menu.privateKeyRingTableModel.add(new PrivateKeyRingBean(pkr, skr));
         } catch (Exception e) {
             e.printStackTrace();
         }
