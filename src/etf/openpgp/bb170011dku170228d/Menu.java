@@ -152,7 +152,7 @@ public class Menu {
                 JFileChooser fc = new JFileChooser();
                 if (fc.showOpenDialog(mainMenu) == JFileChooser.APPROVE_OPTION) {
                     PGPPublicKeyRing pkr = new PGPPublicKeyRing(
-                            PGPUtil.getDecoderStream(new FileInputStream(fc.getSelectedFile().getName())),
+                            PGPUtil.getDecoderStream(new FileInputStream(fc.getSelectedFile().getAbsolutePath())),
                             new BcKeyFingerprintCalculator());
                     publicKeyRingTableModel.add(new PublicKeyRingBean(pkr));
                 }
