@@ -9,6 +9,7 @@ import org.bouncycastle.openpgp.operator.PGPContentSignerBuilder;
 import org.bouncycastle.openpgp.operator.bc.*;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -22,7 +23,6 @@ public class PGPUtility {
     private static final int BUFFER_SIZE = 1 << 16;
 
     public static void signEncryptFile(
-            OutputStream out,
             String fileName,
             PGPPublicKeyRing publicKey,
             PGPSecretKey secretKey,
@@ -38,6 +38,8 @@ public class PGPUtility {
         // Initialize Bouncy Castle security provider
         Provider provider = new BouncyCastleProvider();
         Security.addProvider(provider);
+
+        OutputStream out = new FileOutputStream(fileName + ".pgp");
 
         if (radix64) {
             out = new ArmoredOutputStream(out);

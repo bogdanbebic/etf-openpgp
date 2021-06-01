@@ -68,13 +68,6 @@ public class SignAndEncryptDialog extends JDialog {
             filename = fc.getSelectedFile().getAbsolutePath();
         }
 
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(filename + "_encrypted");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
         int rowSign = tableSign.getSelectedRow();
         PGPSecretKeyRing skr = ((KeyRingTableModel)tableSign.getModel()).getSkr(rowSign);
 
@@ -83,7 +76,6 @@ public class SignAndEncryptDialog extends JDialog {
 
         try {
             PGPUtility.signEncryptFile(
-                    out,
                     filename,
                     pkr,
                     skr.getSecretKey(),
