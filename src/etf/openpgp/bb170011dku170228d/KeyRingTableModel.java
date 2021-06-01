@@ -78,4 +78,8 @@ public class KeyRingTableModel extends DefaultTableModel {
         // add key to UI
         super.addRow(key.toArray());
     }
+
+    public PGPSecretKeyRing getSkr(int row) {
+        return ((PrivateKeyRingBean)keyRings.get(row)).getSkr();
+    }
 }

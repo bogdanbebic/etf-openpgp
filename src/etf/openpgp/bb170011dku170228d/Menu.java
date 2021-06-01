@@ -3,7 +3,10 @@ package etf.openpgp.bb170011dku170228d;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.bouncycastle.openpgp.*;
+import org.bouncycastle.openpgp.operator.PBESecretKeyDecryptor;
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
+import org.bouncycastle.openpgp.operator.bc.BcPBESecretKeyDecryptorBuilder;
+import org.bouncycastle.openpgp.operator.bc.BcPGPDigestCalculatorProvider;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -183,8 +186,23 @@ public class Menu {
             if (tabbedPane1.getSelectedIndex() == 1)
                 selectedTable = publicKeysTable;
             int rowToRemove = selectedTable.getSelectedRow();
-            if (rowToRemove != -1)
+            if (rowToRemove != -1) {
+                if (selectedTable.equals(privateKeysTable)) {
+                    KeyDeletionDialog dialog = new KeyDeletionDialog();
+                    dialog.pack();
+                    dialog.setVisible(true);
+                    PBESecretKeyDecryptor dec = new BcPBESecretKeyDecryptorBuilder(new BcPGPDigestCalculatorProvider()).build(dialog.getPassphrase());
+                    PGPSecretKeyRing skr = ((KeyRingTableModel)selectedTable.getModel()).getSkr(rowToRemove);
+                    try {
+                        if (skr.getSecretKey().extractPrivateKey(dec) == null) {
+                            return;
+                        }
+                    } catch (PGPException pgpException) {
+                        return;
+                    }
+                }
                 ((DefaultTableModel)selectedTable.getModel()).removeRow(rowToRemove);
+            }
             // deleteButton.setEnabled(false);
         }));
     }
