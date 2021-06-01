@@ -146,7 +146,9 @@ public class Menu {
     {
         // action listeners
         signEncryptButton.addActionListener((e -> {
-            // TODO: implement
+            SignAndEncryptDialog dialog = new SignAndEncryptDialog();
+            dialog.pack();
+            dialog.setVisible(true);
         }));
         decryptVerifyButton.addActionListener((e -> {
             // TODO: implement
