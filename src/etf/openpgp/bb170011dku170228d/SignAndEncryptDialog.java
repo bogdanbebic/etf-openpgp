@@ -116,5 +116,19 @@ public class SignAndEncryptDialog extends JDialog {
     private void createUIComponents() {
         tableSign = new JTable(Menu.privateKeyRingTableModel);
         tableEncrypt = new JTable(Menu.publicKeyRingTableModel);
+
+        signCheckBox = new JCheckBox(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passwordField.setEnabled(signCheckBox.isSelected());
+            }
+        });
+        encryptCheckBox = new JCheckBox(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a3DESRadioButton.setEnabled(encryptCheckBox.isSelected());
+                CAST5RadioButton.setEnabled(encryptCheckBox.isSelected());
+            }
+        });
     }
 }
