@@ -25,8 +25,8 @@ public class PGPUtility {
     public static void signEncryptFile(
             String fileName,
             PGPPublicKeyRing publicKey,
-            PGPSecretKey secretKey,
-            String password,
+            PGPSecretKeyRing secretKey,
+            char[] password,
             boolean encrypt,
             boolean sign,
             boolean compress,
@@ -83,7 +83,15 @@ public class PGPUtility {
         PGPSignatureGenerator signatureGenerator = null;
 
         if (sign) {
-            PGPPrivateKey privateKey = findPrivateKey(secretKey, password.toCharArray());
+
+            PGPSecretKey next = null;
+            for (Iterator<PGPSecretKey> iterator = secretKey.getSecretKeys(); iterator.hasNext();) {
+                next = iterator.next();
+                if (next.isSigningKey())
+                    break;
+            }
+
+            PGPPrivateKey privateKey = findPrivateKey(secretKey.getSecretKey(), password);
             PGPContentSignerBuilder signerBuilder = new BcPGPContentSignerBuilder(secretKey.getPublicKey().getAlgorithm(),
                     HashAlgorithmTags.SHA1);
             signatureGenerator = new PGPSignatureGenerator(signerBuilder);

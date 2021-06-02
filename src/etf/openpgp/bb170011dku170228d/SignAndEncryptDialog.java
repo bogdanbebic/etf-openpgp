@@ -78,8 +78,8 @@ public class SignAndEncryptDialog extends JDialog {
             PGPUtility.signEncryptFile(
                     filename,
                     pkr,
-                    skr.getSecretKey(),
-                    Arrays.toString(passwordField.getPassword()),
+                    skr,
+                    passwordField.getPassword(),
                     encryptCheckBox.isSelected(),
                     signCheckBox.isSelected(),
                     compressCheckBox.isSelected(),
