@@ -27,6 +27,7 @@ public class SignAndEncryptDialog extends JDialog {
     private JCheckBox radix64CheckBox;
     private JRadioButton a3DESRadioButton;
     private JRadioButton CAST5RadioButton;
+    private final JFileChooser fc = new JFileChooser();
 
     public SignAndEncryptDialog() {
         setContentPane(contentPane);
@@ -63,7 +64,6 @@ public class SignAndEncryptDialog extends JDialog {
 
     private void onOK() {
         String filename = "";
-        JFileChooser fc = new JFileChooser();
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             filename = fc.getSelectedFile().getAbsolutePath();
         }

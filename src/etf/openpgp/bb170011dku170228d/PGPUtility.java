@@ -47,6 +47,8 @@ public class PGPUtility {
 
         // ENCRYPT
         BcPGPDataEncryptorBuilder dataEncryptor;
+        OutputStream encryptedOut = out;
+        PGPEncryptedDataGenerator encryptedDataGenerator = null;
 
         if (encrypt) {
             if (isCAST5) {
@@ -57,22 +59,20 @@ public class PGPUtility {
             }
             dataEncryptor.setWithIntegrityPacket(true);
             dataEncryptor.setSecureRandom(new SecureRandom());
+
+            encryptedDataGenerator = new PGPEncryptedDataGenerator(dataEncryptor);
+
+            PGPPublicKey next = null;
+
+            for (Iterator<PGPPublicKey> iterator = publicKey.getPublicKeys(); iterator.hasNext();) {
+                next = iterator.next();
+                if (next.isEncryptionKey())
+                    break;
+            }
+
+            encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(next));
+            encryptedOut = encryptedDataGenerator.open(out, new byte[PGPUtility.BUFFER_SIZE]);
         }
-        else {
-            dataEncryptor = new BcPGPDataEncryptorBuilder(PGPEncryptedData.NULL);
-        }
-
-        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(dataEncryptor);
-
-        PGPPublicKey next = null;
-
-        for (Iterator<PGPPublicKey> iterator = publicKey.getPublicKeys(); iterator.hasNext();) {
-            next = iterator.next();
-        }
-
-        encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(next));
-
-        OutputStream encryptedOut = encryptedDataGenerator.open(out, new byte[PGPUtility.BUFFER_SIZE]);
 
         // COMPRESS
         PGPCompressedDataGenerator compressedDataGenerator =
@@ -123,12 +123,13 @@ public class PGPUtility {
         in.close();
         literalDataGenerator.close();
         // Generate the signature, compress, encrypt and write to the "out" stream
-        signatureGenerator.generate().encode(compressedOut);
-        compressedDataGenerator.close();
-        encryptedDataGenerator.close();
-        if (radix64) {
-            out.close();
-        }
+        if (sign)
+            signatureGenerator.generate().encode(compressedOut);
+        if (compress)
+            compressedDataGenerator.close();
+        if (encrypt)
+            encryptedDataGenerator.close();
+        out.close();
     }
 
     public static PGPPrivateKey findPrivateKey(PGPSecretKey pgpSecKey, char[] pass)
