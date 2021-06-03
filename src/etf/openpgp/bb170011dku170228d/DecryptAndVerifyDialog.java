@@ -6,6 +6,7 @@ import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.Optional;
 
 public class DecryptAndVerifyDialog extends JDialog {
@@ -60,7 +61,7 @@ public class DecryptAndVerifyDialog extends JDialog {
                 filename,
                 passwordField.getPassword());
             message.ifPresent(s -> JOptionPane.showMessageDialog(this, s));
-        } catch (IOException | PGPException e) {
+        } catch (IOException | PGPException | SignatureException e) {
             e.printStackTrace();
         }
 
