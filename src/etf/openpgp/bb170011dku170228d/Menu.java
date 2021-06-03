@@ -151,7 +151,9 @@ public class Menu {
             dialog.setVisible(true);
         }));
         decryptVerifyButton.addActionListener((e -> {
-            // TODO: implement
+            DecryptAndVerifyDialog dialog = new DecryptAndVerifyDialog();
+            dialog.pack();
+            dialog.setVisible(true);
         }));
         importButton.addActionListener((e -> {
             try {
