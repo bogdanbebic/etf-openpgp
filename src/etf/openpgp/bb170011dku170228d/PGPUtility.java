@@ -258,7 +258,7 @@ public class PGPUtility {
         byte[] output = outStream.toByteArray();
 
         if (onePassSignatureList == null || signatureList == null) {
-            return Optional.of("YO MAMA IS NOT SIGNED");
+            return Optional.of("FILE IS NOT SIGNED");
         }
 
         StringBuilder stringBuilder = new StringBuilder();
