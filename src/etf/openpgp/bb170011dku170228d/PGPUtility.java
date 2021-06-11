@@ -10,6 +10,8 @@ import org.bouncycastle.openpgp.operator.bc.*;
 import org.bouncycastle.util.io.Streams;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -182,7 +184,8 @@ public class PGPUtility {
         PGPSecretKeyRingCollection secretKeyCollection = new PGPSecretKeyRingCollection(Menu.privateKeyRingTableModel.getPrivateKeys());
         PGPPublicKeyRingCollection publicKeyCollection = new PGPPublicKeyRingCollection(Menu.publicKeyRingTableModel.getPublicKeys());
 
-        OutputStream fOut = new FileOutputStream("decrypted.txt");
+        Path outPath = Paths.get(filename);
+        OutputStream fOut = new FileOutputStream(outPath.getParent() + "/decrypted.txt");
 
         PGPObjectFactory pgpF = new PGPObjectFactory(
                 PGPUtil.getDecoderStream(new FileInputStream(filename)),
