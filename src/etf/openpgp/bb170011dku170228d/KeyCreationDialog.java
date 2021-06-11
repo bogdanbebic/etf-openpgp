@@ -3,6 +3,9 @@ package etf.openpgp.bb170011dku170228d;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * Class representing dialog to run on key creation
+ */
 public class KeyCreationDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -64,10 +67,4 @@ public class KeyCreationDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        KeyCreationDialog dialog = new KeyCreationDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

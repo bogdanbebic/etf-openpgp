@@ -19,7 +19,7 @@ public class KeyRingTableModel extends DefaultTableModel {
 
     private static final PublicKeyRingBean dummyKeyRingBean = new PublicKeyRingBean();
 
-    private ArrayList<PublicKeyRingBean> keyRings = new ArrayList<>();
+    private final ArrayList<PublicKeyRingBean> keyRings = new ArrayList<>();
 
     /**
      *
@@ -44,6 +44,7 @@ public class KeyRingTableModel extends DefaultTableModel {
     public void exportRow(int row) {
         Object keyRing = super.getDataVector().get(row);
         if (keyRing instanceof Vector) {
+            //noinspection rawtypes
             Vector key = (Vector) keyRing;
             keyRings.stream().filter(element ->
                     element.getValue(0).equals(key.get(0)) &&
@@ -78,6 +79,7 @@ public class KeyRingTableModel extends DefaultTableModel {
         // delete key
         Object keyRing = super.getDataVector().get(row);
         if (keyRing instanceof Vector) {
+            //noinspection rawtypes
             Vector key = (Vector) keyRing;
             keyRings.removeIf(element -> element.getValue(0).equals(key.get(0)) &&
                     element.getValue(1).equals(key.get(1)) &&
@@ -113,6 +115,6 @@ public class KeyRingTableModel extends DefaultTableModel {
      * @return PGPPublicKeyRing of the selected row
      */
     public PGPPublicKeyRing getPkr(int row) {
-        return ((PublicKeyRingBean)keyRings.get(row)).getPkr();
+        return keyRings.get(row).getPkr();
     }
 }

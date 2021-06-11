@@ -10,11 +10,12 @@ import org.bouncycastle.openpgp.operator.bc.*;
 import org.bouncycastle.util.io.Streams;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.SignatureException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Optional;
@@ -87,8 +88,10 @@ public class PGPUtility {
                     break;
             }
 
-            encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(next));
-            encryptedOut = encryptedDataGenerator.open(out, new byte[PGPUtility.BUFFER_SIZE]);
+            if (next != null) {
+                encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(next));
+                encryptedOut = encryptedDataGenerator.open(out, new byte[PGPUtility.BUFFER_SIZE]);
+            }
         }
 
         // COMPRESS
@@ -101,7 +104,7 @@ public class PGPUtility {
 
         if (sign) {
 
-            PGPSecretKey next = null;
+            PGPSecretKey next;
             for (Iterator<PGPSecretKey> iterator = secretKey.getSecretKeys(); iterator.hasNext();) {
                 next = iterator.next();
                 if (next.isSigningKey())
@@ -114,14 +117,12 @@ public class PGPUtility {
             signatureGenerator = new PGPSignatureGenerator(signerBuilder);
             signatureGenerator.init(PGPSignature.BINARY_DOCUMENT, privateKey);
 
-            boolean firstTime = true;
             Iterator<String> it = secretKey.getPublicKey().getUserIDs();
-            while (it.hasNext() && firstTime) {
+            if (it.hasNext()) {
                 PGPSignatureSubpacketGenerator spGen = new PGPSignatureSubpacketGenerator();
+                //noinspection deprecation
                 spGen.setSignerUserID(false, it.next());
                 signatureGenerator.setHashedSubpackets(spGen.generate());
-                // Exit the loop after the first iteration
-                firstTime = false;
             }
             signatureGenerator.generateOnePassVersion(false).encode(compressedOut);
         }
@@ -157,7 +158,7 @@ public class PGPUtility {
         out.close();
     }
 
-    public static PGPPrivateKey findPrivateKey(PGPSecretKey pgpSecKey, char[] pass)
+    private static PGPPrivateKey findPrivateKey(PGPSecretKey pgpSecKey, char[] pass)
             throws PGPException
     {
         if (pgpSecKey == null) return null;
@@ -183,7 +184,8 @@ public class PGPUtility {
         PGPSecretKeyRingCollection secretKeyCollection = new PGPSecretKeyRingCollection(Menu.privateKeyRingTableModel.getPrivateKeys());
         PGPPublicKeyRingCollection publicKeyCollection = new PGPPublicKeyRingCollection(Menu.publicKeyRingTableModel.getPublicKeys());
 
-        OutputStream fOut = new FileOutputStream("decrypted.txt");
+        Path outPath = Paths.get(filename);
+        OutputStream fOut = new FileOutputStream(outPath.getParent() + "/decrypted.txt");
 
         PGPObjectFactory pgpF = new PGPObjectFactory(
                 PGPUtil.getDecoderStream(new FileInputStream(filename)),
@@ -252,12 +254,11 @@ public class PGPUtility {
         fOut.write(outStream.toByteArray());
         fOut.close();
 
-        PGPPublicKey publicKey = null;
+        PGPPublicKey publicKey;
         byte[] output = outStream.toByteArray();
-        //ako je potpisano
 
         if (onePassSignatureList == null || signatureList == null) {
-            return Optional.of("YO MAMA IS NOT SIGNED");
+            return Optional.of("FILE IS NOT SIGNED");
         }
 
         StringBuilder stringBuilder = new StringBuilder();

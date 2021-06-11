@@ -12,7 +12,7 @@ import java.io.IOException;
  * and other application actions regarding secret keys
  */
 public class PrivateKeyRingBean extends PublicKeyRingBean {
-    private PGPSecretKeyRing skr;
+    private final PGPSecretKeyRing skr;
 
     /**
      * Exports the encapsulated PGPSecretKeyRing to file
@@ -21,7 +21,7 @@ public class PrivateKeyRingBean extends PublicKeyRingBean {
     public void export() {
         super.export();
         try (ArmoredOutputStream out = new ArmoredOutputStream(
-                new FileOutputStream(userId + keyId + "-private.asc"))) {
+                new FileOutputStream(super.getUserId() + super.getKeyId() + "-private.asc"))) {
             skr.encode(out);
         } catch (IOException e) {
             e.printStackTrace();

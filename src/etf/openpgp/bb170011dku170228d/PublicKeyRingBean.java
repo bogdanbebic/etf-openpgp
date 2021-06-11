@@ -12,11 +12,27 @@ import java.util.Date;
  * and other application actions regarding public keys
  */
 public class PublicKeyRingBean {
-    protected String userId = "";
+    private String userId = "";
     private Date validFrom = new Date();
-    protected String keyId = "";
+    private String keyId = "";
 
     private PGPPublicKeyRing pkr;
+
+    /**
+     *
+     * @return the user ID of the encapsulated object
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     *
+     * @return the key ID of the encapsulated object
+     */
+    public String getKeyId() {
+        return keyId;
+    }
 
     /**
      *

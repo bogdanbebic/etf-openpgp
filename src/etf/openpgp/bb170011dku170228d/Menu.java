@@ -20,6 +20,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+/**
+ * Class representing main application menu
+ */
 public class Menu {
     private JButton signEncryptButton;
     private JButton decryptVerifyButton;
@@ -37,6 +40,10 @@ public class Menu {
     static KeyRingTableModel privateKeyRingTableModel = new KeyRingTableModel();
     static KeyRingTableModel publicKeyRingTableModel = new KeyRingTableModel();
 
+    /**
+     * Entry point of the application
+     * @param args from the CMD line
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Menu");
         frame.setContentPane(new Menu().mainMenu);
