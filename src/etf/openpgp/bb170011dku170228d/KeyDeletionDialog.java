@@ -58,10 +58,4 @@ public class KeyDeletionDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        KeyDeletionDialog dialog = new KeyDeletionDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

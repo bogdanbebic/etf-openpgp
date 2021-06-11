@@ -64,10 +64,4 @@ public class KeyCreationDialog extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        KeyCreationDialog dialog = new KeyCreationDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

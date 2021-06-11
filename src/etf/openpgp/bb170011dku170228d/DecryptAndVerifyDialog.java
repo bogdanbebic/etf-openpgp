@@ -1,7 +1,6 @@
 package etf.openpgp.bb170011dku170228d;
 
 import org.bouncycastle.openpgp.PGPException;
-import org.bouncycastle.openpgp.PGPSecretKeyRing;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -71,13 +70,6 @@ public class DecryptAndVerifyDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        DecryptAndVerifyDialog dialog = new DecryptAndVerifyDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     private void createUIComponents() {
