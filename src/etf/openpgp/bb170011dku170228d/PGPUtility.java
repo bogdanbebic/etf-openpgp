@@ -28,7 +28,7 @@ public class PGPUtility {
     private static final int BUFFER_SIZE = 1 << 16;
 
     /**
-     * Runs sign and encrypt of the given file, saves result to <fileName>.pgp
+     * Runs sign and encrypt of the given file, saves result to fileName.pgp
      * @param fileName file path to sign/encrypt
      * @param publicKey used for encryption
      * @param secretKey used for signing
