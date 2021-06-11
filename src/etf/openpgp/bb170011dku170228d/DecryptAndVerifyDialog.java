@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.security.SignatureException;
 import java.util.Optional;
 
+/**
+ * Class representing dialog to run on decrypt/verify action
+ */
 public class DecryptAndVerifyDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

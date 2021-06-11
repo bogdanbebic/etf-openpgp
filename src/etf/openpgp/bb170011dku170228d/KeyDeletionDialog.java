@@ -3,6 +3,9 @@ package etf.openpgp.bb170011dku170228d;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * Class representing dialog to run on key deletion
+ */
 public class KeyDeletionDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

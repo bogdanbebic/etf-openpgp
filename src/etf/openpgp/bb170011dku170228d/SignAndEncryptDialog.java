@@ -6,6 +6,9 @@ import org.bouncycastle.openpgp.PGPSecretKeyRing;
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * Class representing dialog to run on sign/encrypt action
+ */
 public class SignAndEncryptDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
