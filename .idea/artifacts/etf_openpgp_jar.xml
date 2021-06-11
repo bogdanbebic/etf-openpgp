@@ -1,9 +1,13 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="etf-openpgp:jar">
+  <artifact name="etf-openpgp:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/etf_openpgp_jar</output-path>
-    <root id="archive" name="etf-openpgp.jar">
-      <element id="module-output" name="etf-openpgp" />
-      <element id="extracted-dir" path="$IDEA_HOME$/redist/forms_rt.jar" path-in-jar="/" />
+    <root id="root">
+      <element id="archive" name="etf-openpgp.jar">
+        <element id="module-output" name="etf-openpgp" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/lib/bcpg-jdk15on-168.jar" />
+      <element id="file-copy" path="$IDEA_HOME$/redist/forms_rt.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/bcprov-jdk15on-168.jar" />
     </root>
   </artifact>
 </component>

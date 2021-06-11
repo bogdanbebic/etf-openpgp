@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: etf.openpgp.bb170011dku170228d.Menu
+Class-Path: bcpg-jdk15on-168.jar forms_rt.jar bcprov-jdk15on-168.jar
 
