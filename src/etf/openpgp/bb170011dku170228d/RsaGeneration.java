@@ -20,7 +20,17 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Date;
 
+/**
+ * Class encapsulating RSA key generation
+ */
 public class RsaGeneration {
+
+    /**
+     * Generates RSA key pair and adds it to the Menu key ring table
+     * @param keySize size of the generated key pair
+     * @param id of the entity which owns the key
+     * @param passphrase for the generated secret key
+     */
     public static void generateKey(int keySize, String id, char []passphrase) {
         try {
             PGPKeyRingGenerator krgen = generateKeyRingGenerator(keySize, id, passphrase);

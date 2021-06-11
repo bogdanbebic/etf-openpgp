@@ -7,6 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * Class encapsulating the PGPPublicKeyRing for use in the UI table
+ * and other application actions regarding public keys
+ */
 public class PublicKeyRingBean {
     protected String userId = "";
     private Date validFrom = new Date();
@@ -14,10 +18,18 @@ public class PublicKeyRingBean {
 
     private PGPPublicKeyRing pkr;
 
+    /**
+     *
+     * @return the encapsulated PGPPublicKeyRing
+     */
     public PGPPublicKeyRing getPkr() {
         return pkr;
     }
 
+    /**
+     * Exports the encapsulated PGPPublicKeyRing to file
+     * identified by the user id and key id
+     */
     public void export() {
         try (ArmoredOutputStream out = new ArmoredOutputStream(
                 new FileOutputStream(userId + keyId + "-public.asc"))) {
@@ -27,8 +39,15 @@ public class PublicKeyRingBean {
         }
     }
 
+    /**
+     * Default constructor used to make dummy objects
+     */
     public PublicKeyRingBean() {}
 
+    /**
+     * Constructs an encapsulating object
+     * @param pkr to be encapsulated
+     */
     public PublicKeyRingBean(PGPPublicKeyRing pkr) {
         this.pkr = pkr;
 
@@ -37,10 +56,19 @@ public class PublicKeyRingBean {
         this.keyId = Long.toHexString(pkr.getPublicKey().getKeyID());
     }
 
+    /**
+     *
+     * @return array representation of the current object to be shown in the UI
+     */
     public Object[] toArray() {
         return new Object[]{userId, validFrom, keyId};
     }
 
+    /**
+     *
+     * @param index of the object in the array representation
+     * @return object indexed in the array representation
+     */
     public Object getValue(int index) {
         switch (index) {
             case 0:

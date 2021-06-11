@@ -9,6 +9,9 @@ import java.util.Collection;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+/**
+ * Class encapsulating a UI table representation of the key rings
+ */
 public class KeyRingTableModel extends DefaultTableModel {
     private static final String [] columnNames = {
             "User ID", "Valid From", "Key ID"
@@ -18,14 +21,26 @@ public class KeyRingTableModel extends DefaultTableModel {
 
     private ArrayList<PublicKeyRingBean> keyRings = new ArrayList<>();
 
+    /**
+     *
+     * @return collection of public key rings contained in this object
+     */
     public Collection<PGPPublicKeyRing> getPublicKeys() {
         return this.keyRings.stream().map(PublicKeyRingBean::getPkr).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @return collection of private key rings contained in this object
+     */
     public Collection<PGPSecretKeyRing> getPrivateKeys() {
         return this.keyRings.stream().map(e -> ((PrivateKeyRingBean)e).getSkr()).collect(Collectors.toList());
     }
 
+    /**
+     * Exports the key of the given row
+     * @param row to export
+     */
     public void exportRow(int row) {
         Object keyRing = super.getDataVector().get(row);
         if (keyRing instanceof Vector) {
@@ -72,6 +87,10 @@ public class KeyRingTableModel extends DefaultTableModel {
         super.removeRow(row);
     }
 
+    /**
+     * Adds a PublicKeyRingBean to the table
+     * @param key to add
+     */
     public void add(PublicKeyRingBean key) {
         // add key
         keyRings.add(key);
@@ -79,10 +98,20 @@ public class KeyRingTableModel extends DefaultTableModel {
         super.addRow(key.toArray());
     }
 
+    /**
+     *
+     * @param row to get
+     * @return PGPSecretKeyRing of the selected row
+     */
     public PGPSecretKeyRing getSkr(int row) {
         return ((PrivateKeyRingBean)keyRings.get(row)).getSkr();
     }
 
+    /**
+     *
+     * @param row to get
+     * @return PGPPublicKeyRing of the selected row
+     */
     public PGPPublicKeyRing getPkr(int row) {
         return ((PublicKeyRingBean)keyRings.get(row)).getPkr();
     }

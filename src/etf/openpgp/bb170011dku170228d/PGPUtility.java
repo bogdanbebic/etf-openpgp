@@ -19,10 +19,26 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Optional;
 
+/**
+ * Class encapsulating OpenPGP actions
+ */
 public class PGPUtility {
 
     private static final int BUFFER_SIZE = 1 << 16;
 
+    /**
+     * Runs sign and encrypt of the given file, saves result to <fileName>.pgp
+     * @param fileName file path to sign/encrypt
+     * @param publicKey used for encryption
+     * @param secretKey used for signing
+     * @param password used for accessing the secretKey
+     * @param encrypt whether to encrypt
+     * @param sign whether to sign
+     * @param compress whether to compress
+     * @param radix64 whether to run radix-64 conversion
+     * @param isCAST5 whether CAST5 or 3DES is used (true for CAST5, false for 3DES)
+     * @throws Exception if any operation fails
+     */
     public static void signEncryptFile(
             String fileName,
             PGPPublicKeyRing publicKey,
@@ -151,6 +167,15 @@ public class PGPUtility {
         return pgpSecKey.extractPrivateKey(decryptor);
     }
 
+    /**
+     * Runs decryption and verification of the given file, saves result to decrypted.txt
+     * @param filename file path to decrypt/verify
+     * @param passphrase used for accessing the secret key for decryption
+     * @return optional message for the UI regarding this operation
+     * @throws IOException if IO operation has failed
+     * @throws PGPException if PGP operation has failed
+     * @throws SignatureException if unsuccessful signature check
+     */
     public static Optional<String> decryptAndVerify(
             String filename,
             char[] passphrase)
